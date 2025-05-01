@@ -1,7 +1,5 @@
-import pdf from 'pdf-parse/lib/pdf-parse';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
-import * as cheerio from 'cheerio';
 
 export async function extractTextFromFile(filePath, filetype) {
   const fs = await import('fs/promises');
