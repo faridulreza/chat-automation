@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 
 export const BlockType = {
-  TelegramChat: "TelegramRecieveMessage",
+  TelegramRecieveMessage: "TelegramRecieveMessage",
+  APITrigger: "APITrigger",
   TelegramSendMessage: "TelegramSendMessage",
+  AskGPT: "AskGPT",
+  ConditionChecker: "ConditionChecker",
 };
 
 const BlockSchema = new mongoose.Schema(
@@ -50,5 +53,6 @@ const BlockSchema = new mongoose.Schema(
   }
 );
 
-const Block = mongoose.models.Block || mongoose.model("Block", BlockSchema);
+const Block = 
+  mongoose.models?.Block || mongoose.model("Block", BlockSchema);
 export default Block;

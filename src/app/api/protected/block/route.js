@@ -4,18 +4,18 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Automation from "@/models/Automation";
 import { z } from "zod";
-import Block from "@/models/Block";
+import Block, { BlockType } from "@/models/Block";
 
 // GET all blocks under an automation
-export async function GET(request, { params }) {
+export async function GET(request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     await connectDB();
-    const automationId = params.id;
-    const blocks = await Automation.findById(automationId).populate("blocks");
+    const automationId = request.nextUrl.searchParams.get("automationId");
+    const blocks = await Block.find({automationId});
     return NextResponse.json(blocks);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
