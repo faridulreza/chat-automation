@@ -12,31 +12,28 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const CreateAutiomation = () => {
+const CreateTelegram = () => {
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
+  const [token, setToken] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const res = await fetch("/api/protected/automation", {
+    const res = await fetch("/api/protected/telegram", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ token }),
     });
 
-
     if (res.ok) {
-      let data = await res.json();
-      router.push("/automation/" + data._id);
+      router.push("/dashboard?tab=accounts");
     } else {
-      toast.error("Error creating automation");
+      toast.error("Error adding telegram bot");
       setLoading(false);
     }
-    
   };
 
   return (
@@ -48,11 +45,16 @@ const CreateAutiomation = () => {
       flexDirection="column"
       gap={2}
     >
-      <Stack direction="column" spacing={2} alignItems="center" maxWidth="400px">
+      <Stack
+        direction="column"
+        spacing={2}
+        alignItems="center"
+        maxWidth="600px"
+      >
         {loading && (
           <>
             <Typography variant="h4" gutterBottom>
-              Creating Automation...
+              Adding Telegram Bot...
             </Typography>
             <CircularProgress />
           </>
@@ -60,22 +62,22 @@ const CreateAutiomation = () => {
         {!loading && (
           <>
             <Typography variant="h4" gutterBottom>
-              Enter Automation Name
+              Enter Your Telegram Bot Token
             </Typography>
             <TextField
-              label="Automation Name"
+              label="Token"
               variant="outlined"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
             />
 
             <Button
               fullWidth
               variant="contained"
               onClick={handleSubmit}
-              disabled={!name}
+              disabled={!token}
             >
-              Create Automation
+              Add Bot
             </Button>
           </>
         )}
@@ -84,4 +86,4 @@ const CreateAutiomation = () => {
   );
 };
 
-export default CreateAutiomation;
+export default CreateTelegram;

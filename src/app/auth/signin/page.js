@@ -16,7 +16,6 @@ import {
 import NextLink from 'next/link';
 
 export default function SignIn() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');

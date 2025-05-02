@@ -20,21 +20,6 @@ const UserSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
-  favorites: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Movie',
-  }],
-  watchlist: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Movie',
-  }],
-  preferences: {
-    genres: [String],
-    notifications: {
-      email: Boolean,
-      push: Boolean,
-    },
-  },
 }, {
   timestamps: true,
 });

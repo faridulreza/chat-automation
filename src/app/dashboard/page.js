@@ -3,28 +3,25 @@
 import { useState, useEffect } from "react";
 import {
   Container,
-  Grid,
   Paper,
   Typography,
-  Box,
   CircularProgress,
-  Card,
-  CardContent,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
   Divider,
   Stack,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CategoryIcon from "@mui/icons-material/Category";
-import ArticleIcon from "@mui/icons-material/Article";
-import PeopleIcon from "@mui/icons-material/People";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+
 import { format } from "date-fns";
 import { SmartToy, Telegram } from "@mui/icons-material";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import Loading from "@/components/Loading";
+import AutomationsTab from "./AutomationsTab";
+import AccountsTab from "./AccountsTab";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
@@ -59,22 +56,25 @@ const BigAddButton = ({ text, icon, link }) => {
 };
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
+  const [selectedTab, setSelectedTab] = useState("automations");
+  const searchParams = useSearchParams();
 
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab) {
+      setSelectedTab(tab);
+    }
+  }, [searchParams]);
   useEffect(() => {
     setLoading(false);
   }, []);
 
+  const handleChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
   if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="80vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <Loading />;
   }
 
   return (
@@ -106,10 +106,22 @@ export default function DashboardPage() {
           link="/telegram/create"
         />
       </Stack>
-      <Typography variant="h4" gutterBottom>
-        Your Flows
-      </Typography>
-      <Divider sx={{ mb: 4 }} />
+      <Box sx={{ width: "100%", typography: "body1" }}>
+        <TabContext value={selectedTab}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <Tab label="Automations" value="automations" />
+              <Tab label="Accounts" value="accounts" />
+            </TabList>
+          </Box>
+          <TabPanel value="automations">
+            <AutomationsTab />
+          </TabPanel>
+          <TabPanel value="accounts">
+            <AccountsTab />
+          </TabPanel>
+        </TabContext>
+      </Box>
     </Container>
   );
 }
