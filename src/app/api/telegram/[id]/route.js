@@ -84,13 +84,14 @@ export async function POST(request, { params }) {
       );
     }
 
-    const automation = await Automation.findById(block.data.automationId, {
+    const automation = await Automation.findById(block.automationId, {
       _id: 1,
       status: 1,
     });
     if (!automation || automation.status !== "active") {
+      console.log("Automation not active");
       return NextResponse.json(
-        { error: "Automation is not active" },
+        { error: "Automation is not active: " + block.automationId + " status: " + automation?.status },
         { status: 200 }
       );
     }
@@ -105,7 +106,7 @@ export async function POST(request, { params }) {
           text: text,
           message_type: "text",
         },
-        automation_id: block.data.automationId.toString(),
+        automation_id: block.automationId.toString(),
         start_block_id: block._id.toString(),
       }),
     });

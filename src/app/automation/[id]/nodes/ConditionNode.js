@@ -62,6 +62,12 @@ const ConditionNode = (props) => {
     }
   }, [props.dragging, props.positionAbsoluteX, props.positionAbsoluteY]);
 
+  useEffect(() => {
+    if (props.data.data) {
+      setConditionData({...props.data.data});
+    }
+  }, [props.data.data]);
+
   return (
     <Box
       style={{
@@ -78,8 +84,8 @@ const ConditionNode = (props) => {
 
       <Typography variant="body2" sx={{ mb: 1 }}>
         <code>data</code> is the data received from upstream. You can use it to
-        as object and access the properties<br></br> of the data. For example, if you
-        have a data object like this:
+        as object and access the properties<br></br> of the data. For example,
+        if you have a data object like this:
         <pre>{`{ "name": "John", "age": 30, "city": "New York" }`}</pre>
         <br />
         You can access the properties like this:

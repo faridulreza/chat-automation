@@ -21,7 +21,7 @@ export async function POST(request, {params}) {
     }
 
   
-
+    console.log("block", block);
     const automation_id = block.automationId.toString();
     const start_block_id = block._id.toString();
     const inital_state = await request.json();
@@ -29,7 +29,7 @@ export async function POST(request, {params}) {
     const automation = await Automation.findById(automation_id,{_id:1, status:1});
     if(!automation || automation.status !== "active") {
       return NextResponse.json(
-        { error: "Automation is not active" },
+        { error: "Automation is not active: " + automation_id + " status: " + automation.status },
         { status: 200 }
       );
     }
