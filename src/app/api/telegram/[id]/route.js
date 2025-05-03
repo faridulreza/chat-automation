@@ -35,7 +35,7 @@ export async function POST(request, { params }) {
     if (text === "/subscribe") {
       await TelegramAccount.findOneAndUpdate(
         { _id: params.id },
-        { $addToSet: { subscribers: body.chat } }
+        { $addToSet: { subscribers: body.message.chat } }
       );
       await sendTelegramMessage(
         account.token,
