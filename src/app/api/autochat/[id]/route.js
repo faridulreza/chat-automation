@@ -3,11 +3,11 @@ import connectDB from "@/lib/mongodb";
 import Block, { BlockType } from "@/models/Block";
 
 //POST
-export async function POST(request, params) {
+export async function POST(request, {params}) {
   try {
     await connectDB();
-    const body = await request.json();
     const { id } = params;
+    console.log("ID", id);
     const block = await Block.findById(id);
     if (!block) {
       return NextResponse.json({ error: "Block not found" }, { status: 404 });

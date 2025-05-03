@@ -37,6 +37,7 @@ export const buildGraph = (blocks) => {
           source: block._id,
           target: block.connections.yes,
           sourceHandle: "yes",
+          label: "yes",
         });
       }
 
@@ -46,6 +47,7 @@ export const buildGraph = (blocks) => {
           source: block._id,
           target: block.connections.no,
           sourceHandle: "no",
+          label: "no",
         });
       }
     }
