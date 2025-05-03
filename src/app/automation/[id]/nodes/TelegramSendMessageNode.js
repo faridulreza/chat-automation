@@ -101,7 +101,7 @@ const TelegramSendMessageNode = (props) => {
           borderRadius: "4px",
         }}
       >
-        <option value="" disabled>
+        <option value="" >
           <em>Select an account</em>
         </option>
 
@@ -144,6 +144,9 @@ const TelegramSendMessageNode = (props) => {
             });
           }}
         >
+          <option value="">
+            <em>Select a subscriber</em>
+          </option>
           {telegrams?.data
             ?.find(
               (acc) =>
