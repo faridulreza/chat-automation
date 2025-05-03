@@ -114,6 +114,8 @@ export async function POST(request, { params }) {
 
     return NextResponse.json({ok: true}, { status: 200 });
   } catch (error) {
+    const body = await request.json();
+    console.log("body", JSON.stringify(body));
     console.error("Error in Telegram webhook route:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
