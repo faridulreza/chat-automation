@@ -16,7 +16,6 @@ import {
   Button,
 } from "@mui/material";
 
-
 const AskGPTNode = (props) => {
   const [gptData, setGptData] = useState({});
   const queryClient = useQueryClient();
@@ -61,6 +60,12 @@ const AskGPTNode = (props) => {
     }
   }, [props.dragging, props.positionAbsoluteX, props.positionAbsoluteY]);
 
+  useEffect(() => {
+    if (props.data.data) {
+      setGptData(props.data.data);
+    }
+  }, [props.data.data]);
+  
   const handleSave = () => {
     blockUpdateMutation.mutate({
       data: {
@@ -87,6 +92,8 @@ const AskGPTNode = (props) => {
         GPT prompt
       </Typography>
       <TextField
+        multiline
+        rows={4}
         fullWidth
         variant="outlined"
         value={gptData.prompt ?? props.data.data.prompt}
@@ -97,6 +104,8 @@ const AskGPTNode = (props) => {
         Expected response
       </Typography>
       <TextField
+        multiline
+        rows={4}
         fullWidth
         variant="outlined"
         value={gptData.response ?? props.data.data.response}
