@@ -104,7 +104,7 @@ const ConditionNode = (props) => {
           label="lhs"
           variant="outlined"
           size="small"
-          value={conditionData.lhs ?? props.data.data.lhs}
+          value={conditionData.lhs ?? props?.data?.data?.lhs}
           onChange={(e) =>
             setConditionData({ ...conditionData, lhs: e.target.value })
           }
@@ -119,7 +119,7 @@ const ConditionNode = (props) => {
             borderRadius: "4px",
             backgroundColor: "white",
           }}
-          value={conditionData.operator ?? props.data.data.operator}
+          value={conditionData.operator ?? props.data?.data?.operator}
           onChange={(e) =>
             setConditionData({ ...conditionData, operator: e.target.value })
           }
@@ -144,7 +144,7 @@ const ConditionNode = (props) => {
           label="rhs"
           variant="outlined"
           size="small"
-          value={conditionData.rhs ?? props.data.data.rhs}
+          value={conditionData.rhs ?? props.data?.data?.rhs}
           onChange={(e) =>
             setConditionData({ ...conditionData, rhs: e.target.value })
           }
