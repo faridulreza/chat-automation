@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import TelegramAccount from "@/models/TelegramAccount";
 import { sendTelegramMessage } from "@/lib/telegram";
-import { Block } from "@mui/icons-material";
-import { BlockType } from "@/models/Block";
+import Block, { BlockType } from "@/models/Block";
+import Automation from "@/models/Automation";
 
 const getUniqueSubscribers = (subscribers) => {
   const exists= new Set();
@@ -86,6 +86,16 @@ export async function POST(request, { params }) {
         { status: 200 }
       );
     }
+
+    const automation = await Automation.findById(block.data.automationId,{_id:1, status:1});
+    if(!automation || automation.status !== "active") {
+      return NextResponse.json(
+        { error: "Automation is not active" },
+        { status: 200 }
+      );
+    }
+
+
 
     await fetch(process.env.TASK_SERVER_URL,{
       method: "POST",

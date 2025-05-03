@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Block, { BlockType } from "@/models/Block";
+import Automation from "@/models/Automation";
 
 //POST
 export async function POST(request, {params}) {
@@ -19,9 +20,19 @@ export async function POST(request, {params}) {
       );
     }
 
+  
+
     const automation_id = block.automationId.toString();
     const start_block_id = block._id.toString();
     const inital_state = await request.json();
+
+    const automation = await Automation.findById(automation_id,{_id:1, status:1});
+    if(!automation || automation.status !== "active") {
+      return NextResponse.json(
+        { error: "Automation is not active" },
+        { status: 200 }
+      );
+    }
 
     await fetch(process.env.TASK_SERVER_URL, {
       method: "POST",
