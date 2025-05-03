@@ -74,7 +74,7 @@ export async function POST(request, { params }) {
     if (!block) {
       await sendTelegramMessage(
         account.token,
-        body.chat.id,
+        body.message.chat.id,
         "No automation found for this message."
       );
 
