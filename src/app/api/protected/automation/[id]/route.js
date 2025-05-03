@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Automation from "@/models/Automation";
 import { z } from "zod";
+import Block from "@/models/Block";
 
 // GET a single automation by ID
 export async function GET(request, { params }) {
@@ -106,6 +107,7 @@ export async function DELETE(request, { params }) {
         { status: 404 }
       );
     }
+    await Block.deleteMany({ automationId: params.id });
     return NextResponse.json({ message: "Automation deleted successfully" });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
