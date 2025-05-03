@@ -6,8 +6,23 @@ import { sendTelegramMessage } from "@/lib/telegram";
 import { Block } from "@mui/icons-material";
 import { BlockType } from "@/models/Block";
 
+const getUniqueSubscribers = (subscribers) => {
+  const exists= new Set();
+  const uniqueSubscribers = [];
+
+  for (const subscriber of subscribers) {
+    if (!exists.has(subscriber.id)) {
+      exists.add(subscriber.id);
+      uniqueSubscribers.push(subscriber);
+    }
+  }
+
+  return uniqueSubscribers;
+
+}
 export async function POST(request, { params }) {
   try {
+  
     if (!params.id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
@@ -15,6 +30,7 @@ export async function POST(request, { params }) {
     const account = await TelegramAccount.findOne({
       _id: params.id,
     });
+
 
     if (!account) {
       return NextResponse.json(
@@ -33,13 +49,16 @@ export async function POST(request, { params }) {
     }
 
     if (text === "/subscribe") {
+      const subscribers = getUniqueSubscribers(
+        [...account.subscribers, body.message.chat])
+
       await TelegramAccount.findOneAndUpdate(
         { _id: params.id },
-        { $addToSet: { subscribers: body.message.chat } }
+        {  subscribers }, 
       );
       await sendTelegramMessage(
         account.token,
-        body.chat.id,
+        body.message.chat.id,
         "You have successfully subscribed to the bot."
       );
       return NextResponse.json(
@@ -47,11 +66,13 @@ export async function POST(request, { params }) {
         { status: 200 }
       );
     }
-
+ 
     const block = await Block.findOne({
       type: BlockType.TelegramRecieveMessage,
       "data.accountId": params.id,
     })
+
+
 
     if(!block){
       await sendTelegramMessage(
@@ -83,6 +104,7 @@ export async function POST(request, { params }) {
 
     return NextResponse.json({ok: true}, { status: 200 });
   } catch (error) {
+    console.error("Error in Telegram webhook route:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
