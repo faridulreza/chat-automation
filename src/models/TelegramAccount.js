@@ -24,6 +24,33 @@ const TelegramAccountSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    subscribers: {
+      type: [
+        {
+          id: {
+            type: Number,
+            required: true,
+          },
+          first_name: {
+            type: String,
+            required: true,
+          },
+          last_name: {
+            type: String,
+            required: true,
+          },
+          username: {
+            type: String,
+            required: true,
+          },
+          type: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+    },
   },
   {
     timestamps: true,

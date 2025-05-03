@@ -31,6 +31,14 @@ export async function PATCH(request) {
         },
       }
     );
+
+    await Block.updateOne({
+      _id: target,
+    }, {
+      $set: {
+        [`connections.parent`]: source,
+      },
+    })
     return NextResponse.json(updatedBlock, { status: 200 });
   } catch (error) {
     console.error("body: ", request.body);

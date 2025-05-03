@@ -14,7 +14,9 @@ export async function GET(request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     await connectDB();
-    const accounts = await TelegramAccount.find({ owner: session.user.id });
+    const accounts = await TelegramAccount.find({ owner: session.user.id },{
+      token:0
+    });
     return NextResponse.json(accounts, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

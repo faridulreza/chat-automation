@@ -78,7 +78,7 @@ const ConditionNode = (props) => {
 
       <Typography variant="body2" sx={{ mb: 1 }}>
         <code>data</code> is the data received from upstream. You can use it to
-        as object and access the properties of the data. For example, if you
+        as object and access the properties<br></br> of the data. For example, if you
         have a data object like this:
         <pre>{`{ "name": "John", "age": 30, "city": "New York" }`}</pre>
         <br />

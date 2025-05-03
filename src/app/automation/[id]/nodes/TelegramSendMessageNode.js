@@ -5,10 +5,7 @@ import { ControlButton, Controls, Handle } from "@xyflow/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import {
-  Typography,
-  Box,
-} from "@mui/material";
+import { Typography, Box, TextField } from "@mui/material";
 
 const TelegramSendMessageNode = (props) => {
   const [selectedAccount, setSelectedAccount] = useState("");
@@ -90,7 +87,7 @@ const TelegramSendMessageNode = (props) => {
       </Typography>
 
       <Typography variant="body2" sx={{ mb: 1 }}>
-        Select an account to send messages to
+        Select an account to send messages from
       </Typography>
 
       <select
@@ -124,6 +121,46 @@ const TelegramSendMessageNode = (props) => {
           Create New Account
         </option>
       </select>
+
+      <Typography variant="body2" sx={{ my: 1 }}>
+        Send message to
+      </Typography>
+
+      {(selectedAccount || props.data.data?.accountId) && (
+        <select
+          displayEmpty
+          style={{
+            width: "100%",
+            padding: "8px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
+          onChange={(e) => {
+            blockUpdateMutation.mutate({
+              data: {
+                chatId: e.target.value,
+                accountId: selectedAccount || props.data.data?.accountId,
+              },
+            });
+          }}
+        >
+          {telegrams?.data
+            ?.find(
+              (acc) =>
+                acc._id === (selectedAccount || props.data.data?.accountId)
+            )
+            ?.subscribers?.map((subscriber) => (
+              <option key={subscriber.id} value={subscriber.id}>
+                @{subscriber.username}
+              </option>
+            ))}
+        </select>
+      )}
+
+      <Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+        Make sure you have sent <code>/subscribe</code> <br></br>to the bot to
+        start recieiving messages.
+      </Typography>
 
       <Handle type="target" position="top" />
 
