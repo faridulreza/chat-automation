@@ -96,7 +96,7 @@ const AskGPTNode = (props) => {
         rows={4}
         fullWidth
         variant="outlined"
-        value={gptData.prompt ?? props.data.data.prompt}
+        value={gptData.prompt ?? props.data?.data?.prompt}
         onChange={(e) => setGptData({ ...gptData, prompt: e.target.value })}
       />
 
@@ -108,7 +108,7 @@ const AskGPTNode = (props) => {
         rows={4}
         fullWidth
         variant="outlined"
-        value={gptData.response ?? props.data.data.response}
+        value={gptData.response ?? props.data?.data?.response}
         onChange={(e) => setGptData({ ...gptData, response: e.target.value })}
       />
 
